@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Casa Santa Premium Kitchen — Reservaciones</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --gold:#c9a84c;
+  --gold-dark:#a8893a;
+  --gold-light:#e8c96a;
+  --black:#080808;
+  --black2:#101010;
+  --black3:#161616;
+  --black4:#1e1e1e;
+  --black5:#262626;
+  --border:#222;
+  --border2:#2e2e2e;
+  --text:#e8d9b5;
+  --text2:#b0a070;
+  --muted:#585858;
+  --white:#f5f0e8;
+}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--text);font-family:'Montserrat',sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:'Cormorant Garamond',serif}
+
+.screen{display:none;min-height:100vh;flex-direction:column;animation:fadein .28s ease}
+.screen.active{display:flex}
+@keyframes fadein{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+
+/* HEADER */
+.hdr{display:flex;align-items:center;padding:15px 18px;border-bottom:1px solid var(--border);background:var(--black);position:sticky;top:0;z-index:50}
+.hdr-logo{flex:1;text-align:center}
+.hdr-logo .nm{display:block;font-family:'Cormorant Garamond',serif;font-size:16px;letter-spacing:6px;font-weight:700;color:var(--text)}
+.hdr-logo .sm{display:block;font-size:7.5px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-top:1px}
+.back{background:none;border:none;color:var(--gold);font-size:20px;cursor:pointer;padding:4px 8px;width:36px;transition:opacity .18s}
+.back:hover{opacity:.6}
+.hdr-sp{width:36px}
+
+/* HERO */
+.hero{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:52px 28px 64px;text-align:center;background:radial-gradient(ellipse at 50% 10%,#181200 0%,transparent 65%)}
+.rule{height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);width:220px;margin:9px auto}
+.rule.dim{opacity:.35;width:160px;margin:4px auto}
+.brand{font-size:38px;letter-spacing:8px;font-weight:700;color:var(--text);line-height:1;margin:7px 0 3px}
+.kitchen{font-size:8.5px;letter-spacing:6px;color:var(--gold);text-transform:uppercase}
+.tagline{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:19px;color:var(--text2);margin:26px 0 34px;line-height:1.45}
+.hrs-pill{background:var(--black2);border:1px solid var(--border2);border-radius:10px;padding:13px 22px;margin-bottom:34px}
+.hrs-pill p{font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:5px}
+.hrs-pill span{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--gold)}
+.home-nav{display:flex;flex-direction:column;align-items:center;gap:9px;width:100%;max-width:340px}
+
+/* BUTTONS */
+.btn{display:block;width:100%;max-width:340px;border:none;border-radius:7px;padding:13px 28px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;font-family:'Montserrat',sans-serif;cursor:pointer;transition:opacity .18s,transform .14s}
+.btn:hover{opacity:.82;transform:translateY(-1px)}
+.btn-g{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--black);font-weight:700}
+.btn-o{background:transparent;border:1px solid var(--border2);color:var(--muted)}
+.btn-o:hover{border-color:var(--gold);color:var(--gold)}
+.btn-full{max-width:100%}
+
+/* CONTAINER */
+.wrap{max-width:520px;margin:0 auto;padding:22px 15px 52px;width:100%}
+
+/* CARDS */
+.card{background:var(--black2);border:1px solid var(--border);border-radius:13px;padding:20px;margin-bottom:14px}
+.card-ttl{font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--text);margin-bottom:16px;padding-bottom:11px;border-bottom:1px solid var(--border);letter-spacing:.8px}
+
+/* FIELDS */
+.fld{margin-bottom:16px}
+.fld label{display:block;font-size:8.5px;letter-spacing:2.5px;color:var(--muted);text-transform:uppercase;margin-bottom:7px;font-weight:500}
+.fld input,.fld select,.fld textarea{width:100%;background:var(--black3);border:1px solid var(--border);border-radius:7px;padding:11px 13px;color:var(--text);font-size:13px;font-family:'Montserrat',sans-serif;outline:none;transition:border-color .18s,background .18s;-webkit-appearance:none}
+.fld input:focus,.fld select:focus,.fld textarea:focus{border-color:var(--gold);background:var(--black4)}
+.fld select option{background:var(--black3);color:var(--text)}
+.fld textarea{resize:none;height:78px;line-height:1.55}
+.row{display:flex;gap:11px}
+.row .fld{flex:1}
+
+/* AVAIL BADGE */
+.avail{border-radius:7px;padding:10px 13px;margin-bottom:16px;border:1px solid;font-size:11.5px;line-height:1.4;letter-spacing:.2px}
+.avail.ok{background:#080f08;border-color:#1a3a1a;color:#5ab85a}
+.avail.no{background:#0f0808;border-color:#3a1a1a;color:#c05050}
+
+/* TABS */
+.tabs{display:flex;border-bottom:1px solid var(--border);background:var(--black)}
+.tab{flex:1;padding:13px 0;background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);font-size:9.5px;cursor:pointer;letter-spacing:1.5px;font-family:'Montserrat',sans-serif;text-transform:uppercase;transition:color .18s,border-color .18s}
+.tab.on{color:var(--gold);border-bottom-color:var(--gold)}
+
+/* RES CARD */
+.rc{background:var(--black2);border:1px solid var(--border);border-radius:11px;padding:17px;margin-bottom:9px;transition:border-color .18s}
+.rc:hover{border-color:var(--border2)}
+.rc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:9px}
+.rc-name{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--text);line-height:1}
+.rc-phone{font-size:10.5px;color:var(--muted);margin-top:3px}
+.rc-hour{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:600;color:var(--gold);text-align:right}
+.rc-date{font-size:10.5px;color:var(--muted);text-align:right;margin-top:2px}
+.bgs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:7px}
+.bg{background:var(--black3);border:1px solid var(--border);border-radius:20px;padding:3px 9px;font-size:10.5px;color:var(--text2)}
+.rc-notes{font-style:italic;color:var(--muted);font-size:11.5px;margin-top:5px;line-height:1.5;padding-top:7px;border-top:1px solid var(--border)}
+.rc-acts{display:flex;gap:7px;margin-top:11px;padding-top:11px;border-top:1px solid var(--border)}
+.bsm{background:var(--black3);border:1px solid var(--border2);border-radius:5px;padding:6px 12px;color:var(--gold);font-size:10.5px;cursor:pointer;font-family:'Montserrat',sans-serif;transition:opacity .18s}
+.bsm:hover{opacity:.65}
+.bsm.del{border-color:#3a1a1a;color:#c05050}
+
+/* HOURS GRID */
+.hgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.hcard{background:var(--black2);border:1px solid;border-radius:9px;padding:15px 11px;display:flex;flex-direction:column;align-items:center;gap:7px}
+.hlabel{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:var(--text)}
+.hbar-bg{width:100%;height:3px;background:var(--black5);border-radius:2px}
+.hbar{height:100%;border-radius:2px;transition:width .45s ease}
+.hinfo{font-size:10.5px;letter-spacing:.2px}
+
+/* HOURS PAGE */
+.hlist{display:flex;flex-direction:column}
+.hrow{display:flex;justify-content:space-between;align-items:center;padding:15px 0;border-bottom:1px solid var(--border)}
+.hrow:last-child{border-bottom:none}
+.hday{font-size:12.5px;color:var(--text2)}
+.htime{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--gold)}
+
+/* SUGGESTIONS */
+.sgcard{background:var(--black2);border:1px solid var(--border);border-radius:11px;padding:17px;margin-bottom:9px}
+.sg-hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:3px}
+.sg-name{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--text)}
+.sg-dt{font-size:9.5px;color:var(--muted)}
+.sg-type{font-size:9.5px;letter-spacing:1px;color:var(--gold);text-transform:uppercase;margin-bottom:7px}
+.sg-txt{font-size:12.5px;color:var(--text2);line-height:1.65}
+
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.9);display:flex;align-items:center;justify-content:center;z-index:100;padding:18px}
+.modal{background:var(--black2);border:1px solid var(--border2);border-radius:14px;padding:26px 22px;width:100%;max-width:310px}
+.modal h3{font-size:19px;margin-bottom:7px}
+.modal p{color:var(--muted);font-size:12.5px;margin-bottom:20px;line-height:1.55}
+.mbtns{display:flex;gap:9px}
+.mbtns .bsm{flex:1;text-align:center;padding:9px}
+
+/* LOGIN */
+.lgwrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 22px}
+.lgwrap h2{font-size:25px;margin-bottom:5px}
+.lgwrap p{color:var(--muted);font-size:12.5px;margin-bottom:26px;text-align:center}
+.lgerr{color:#c05050;font-size:11.5px;margin-top:9px;text-align:center;min-height:16px}
+
+/* TOAST */
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);border:1px solid;border-radius:7px;padding:11px 22px;z-index:200;white-space:nowrap;font-size:11.5px;letter-spacing:.4px;animation:fup .28s ease;pointer-events:none}
+.toast.ok{background:#080f08;border-color:#1a3a1a;color:#5ab85a}
+.toast.er{background:#0f0808;border-color:#3a1a1a;color:#c05050}
+@keyframes fup{from{opacity:0;transform:translateX(-50%) translateY(7px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+
+/* SUMMARY BAR */
+.sbar{background:var(--black3);border:1px solid var(--border);border-radius:7px;padding:11px 15px;margin-bottom:14px;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.sbar span{font-size:10.5px;color:var(--muted)}
+.sbar strong{color:var(--gold);font-family:'Cormorant Garamond',serif;font-size:15px;margin-right:3px}
+.sec-lbl{font-size:8.5px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-bottom:13px;padding-bottom:9px;border-bottom:1px solid var(--border)}
+.empty{color:var(--muted);text-align:center;margin-top:46px;font-size:15px;font-style:italic;font-family:'Cormorant Garamond',serif}
+
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:var(--black)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ HOME ═══════════ -->
+<div class="screen active" id="s-home">
+  <div class="hero">
+    <div style="margin-bottom:30px">
+      <div class="rule"></div>
+      <div class="rule dim"></div>
+      <h1 class="brand">CASA SANTA</h1>
+      <p class="kitchen">Premium Kitchen</p>
+      <div class="rule dim"></div>
+      <div class="rule"></div>
+    </div>
+    <p class="tagline">Una mesa,<br>una experiencia.</p>
+    <div class="hrs-pill">
+      <p>Horario</p>
+      <span>Lunes a Domingo &nbsp;·&nbsp; 1:00 PM – 12:00 AM</span>
+    </div>
+    <div class="home-nav">
+      <button class="btn btn-g" onclick="openClientForm()">Hacer Reservación</button>
+      <button class="btn btn-o" onclick="go('s-lookup')">Buscar mi Reservación</button>
+      <button class="btn btn-o" onclick="go('s-suggest')">Comentarios y Sugerencias</button>
+      <button class="btn btn-o" onclick="go('s-hours')">Horarios e Información</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ ADMIN LOGIN ═══════════ -->
+<div class="screen" id="s-login">
+  <div class="hdr">
+    <button class="back" onclick="go('s-home')">←</button>
+    <div class="hdr-logo"><span class="nm">CASA SANTA</span><span class="sm">Acceso Equipo</span></div>
+    <div class="hdr-sp"></div>
+  </div>
+  <div class="lgwrap">
+    <div style="font-size:36px;margin-bottom:18px;opacity:.6">🔐</div>
+    <h2>Acceso Administrativo</h2>
+    <p>Solo personal autorizado de Casa Santa</p>
+    <div style="width:100%;max-width:320px">
+      <div class="fld">
+        <label>Contraseña</label>
+        <input type="password" id="pwd" placeholder="••••••••" onkeydown="if(event.key==='Enter')doPwd()"/>
+      </div>
+      <button class="btn btn-g btn-full" onclick="doPwd()">Entrar</button>
+      <p class="lgerr" id="pwd-err"></p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ ADMIN PANEL ═══════════ -->
+<div class="screen" id="s-admin">
+  <div class="hdr">
+    <button class="back" onclick="doLogout()">←</button>
+    <div class="hdr-logo"><span class="nm">CASA SANTA</span><span class="sm">Administración</span></div>
+    <div class="hdr-sp"></div>
+  </div>
+  <div class="tabs">
+    <button class="tab on" id="tb-r" onclick="aTab('r')">Reservaciones</button>
+    <button class="tab" id="tb-d" onclick="aTab('d')">Disponibilidad</button>
+    <button class="tab" id="tb-s" onclick="aTab('s')">Comentarios</button>
+  </div>
+  <div class="wrap">
+
+    <!-- Reservaciones -->
+    <div id="ap-r">
+      <div style="display:flex;gap:9px;align-items:center;margin-bottom:13px">
+        <input type="date" id="adate"
+          style="flex:1;background:var(--black3);border:1px solid var(--border);border-radius:7px;padding:10px 12px;color:var(--text);font-size:12.5px;font-family:Montserrat,sans-serif;outline:none"
+          onchange="renderAList()"/>
+        <button class="btn btn-g" style="width:auto;max-width:none;padding:10px 16px;white-space:nowrap" onclick="openNewAdmin()">+ Nueva</button>
+      </div>
+      <div class="sbar">
+        <span><strong id="s-cnt">0</strong>reservaciones</span>
+        <span><strong id="s-ppl">0</strong>personas</span>
+        <span><strong id="s-cap">0</strong>capacidad usada</span>
+      </div>
+      <div id="a-list"></div>
+    </div>
+
+    <!-- Disponibilidad -->
+    <div id="ap-d" style="display:none">
+      <div class="fld" style="margin-bottom:14px">
+        <label>Fecha</label>
+        <input type="date" id="ddate"
+          style="width:100%;background:var(--black3);border:1px solid var(--border);border-radius:7px;padding:10px 12px;color:var(--text);font-size:12.5px;font-family:Montserrat,sans-serif;outline:none"
+          onchange="renderDisp()"/>
+      </div>
+      <div class="hgrid" id="d-grid"></div>
+    </div>
+
+    <!-- Comentarios -->
+    <div id="ap-s" style="display:none">
+      <p class="sec-lbl">Comentarios recibidos</p>
+      <div id="a-sug"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════ FORM RESERVACIÓN ═══════════ -->
+<div class="screen" id="s-form">
+  <div class="hdr">
+    <button class="back" onclick="backForm()">←</button>
+    <div class="hdr-logo"><span class="nm" id="form-ttl">Nueva Reservación</span></div>
+    <div class="hdr-sp"></div>
+  </div>
+  <div class="wrap">
+    <div class="card">
+      <p class="card-ttl">Datos de la Reservación</p>
+      <div class="fld">
+        <label>Nombre completo *</label>
+        <input type="text" id="f-name" placeholder="Tu nombre completo"/>
+      </div>
+      <div class="fld">
+        <label>Teléfono *</label>
+        <input type="tel" id="f-phone" placeholder="55 1234 5678"/>
+      </div>
+      <div class="row">
+        <div class="fld">
+          <label>Fecha *</label>
+          <input type="date" id="f-date" onchange="upAvail()"/>
+        </div>
+        <div class="fld">
+          <label>Hora *</label>
+          <select id="f-hour" onchange="upAvail()"></select>
+        </div>
+      </div>
+      <div class="fld">
+        <label>Número de personas *</label>
+        <select id="f-guests" onchange="upAvail()"></select>
+      </div>
+      <div class="avail ok" id="avail-badge">Verificando disponibilidad…</div>
+      <div class="fld">
+        <label>Solicitudes especiales (opcional)</label>
+        <textarea id="f-notes" placeholder="Alergias, celebraciones, preferencias de mesa…"></textarea>
+      </div>
+      <button class="btn btn-g btn-full" id="f-submit" onclick="doSubmit()">Confirmar Reservación</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ BUSCAR ═══════════ -->
+<div class="screen" id="s-lookup">
+  <div class="hdr">
+    <button class="back" onclick="go('s-home')">←</button>
+    <div class="hdr-logo"><span class="nm">Mis Reservaciones</span></div>
+    <div class="hdr-sp"></div>
+  </div>
+  <div class="wrap">
+    <div class="card">
+      <p class="card-ttl">Buscar por teléfono</p>
+      <div class="fld" style="margin-bottom:0">
+        <label>Número de teléfono</label>
+        <input type="tel" id="lk-phone" placeholder="55 1234 5678" oninput="renderLookup()"/>
+      </div>
+    </div>
+    <div id="lk-res"></div>
+  </div>
+</div>
+
+<!-- ═══════════ COMENTARIOS CLIENTE ═══════════ -->
+<div class="screen" id="s-suggest">
+  <div class="hdr">
+    <button class="back" onclick="go('s-home')">←</button>
+    <div class="hdr-logo"><span class="nm">Comentarios</span></div>
+    <div class="hdr-sp"></div>
+  </div>
+  <div class="wrap">
+    <div class="card">
+      <p class="card-ttl">Comparte tu experiencia</p>
+      <div class="fld">
+        <label>Tu nombre (opcional)</label>
+        <input type="text" id="s-name" placeholder="Anónimo"/>
+      </div>
+      <div class="fld">
+        <label>Tipo de comentario</label>
+        <select id="s-type">
+          <option value="felicitacion">Felicitación</option>
+          <option value="sugerencia">Sugerencia</option>
+          <option value="recomendacion">Recomendación de platillo</option>
+          <option value="queja">Queja</option>
+          <option value="otro">Otro</option>
+        </select>
+      </div>
+      <div class="fld">
+        <label>Tu comentario *</label>
+        <textarea id="s-txt" style="height:110px" placeholder="Cuéntanos tu experiencia o lo que podemos mejorar…"></textarea>
+      </div>
+      <button class="btn btn-g btn-full" onclick="doSuggest()">Enviar Comentario</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ HORARIOS ═══════════ -->
+<div class="screen" id="s-hours">
+  <div class="hdr">
+    <button class="back" onclick="go('s-home')">←</button>
+    <div class="hdr-logo"><span class="nm">Horarios</span></div>
+    <div class="hdr-sp"></div>
+  </div>
+  <div class="wrap">
+    <div class="card">
+      <p class="card-ttl">Horario de Atención</p>
+      <div class="hlist">
+        <div class="hrow"><span class="hday">Lunes</span><span class="htime">1:00 PM – 12:00 AM</span></div>
+        <div class="hrow"><span class="hday">Martes</span><span class="htime">1:00 PM – 12:00 AM</span></div>
+        <div class="hrow"><span class="hday">Miércoles</span><span class="htime">1:00 PM – 12:00 AM</span></div>
+        <div class="hrow"><span class="hday">Jueves</span><span class="htime">1:00 PM – 12:00 AM</span></div>
+        <div class="hrow"><span class="hday">Viernes</span><span class="htime">1:00 PM – 12:00 AM</span></div>
+        <div class="hrow"><span class="hday">Sábado</span><span class="htime">1:00 PM – 12:00 AM</span></div>
+        <div class="hrow"><span class="hday">Domingo</span><span class="htime">1:00 PM – 12:00 AM</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <p class="card-ttl">Política de Reservaciones</p>
+      <p style="color:var(--text2);font-size:12.5px;line-height:1.95">
+        • Las reservaciones tienen una duración estimada de hora y media.<br>
+        • Por favor llega puntual; tu mesa se mantiene 15 minutos.<br>
+        • Para grupos de más de 10 personas, contáctanos directamente.<br>
+        • Las cancelaciones pueden realizarse desde esta aplicación.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="overlay" id="modal" style="display:none">
+  <div class="modal">
+    <h3>¿Cancelar reservación?</h3>
+    <p>Esta acción no se puede deshacer. El lugar quedará disponible para otros comensales.</p>
+    <div class="mbtns">
+      <button class="bsm" style="text-align:center" onclick="closeModal()">No, volver</button>
+      <button class="bsm del" style="text-align:center" id="modal-yes">Sí, cancelar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast ok" id="toast" style="display:none"></div>
+
+<script>
+// ── CONFIG ──────────────────────────────────────
+const PWD        = "Casasanta.2k6";
+const AHASH      = "#admin";
+const MAX_CAP    = 70;        // max persons per time slot
+const SLOT_MIN   = 30;        // minutes per booking slot
+const STAY_MIN   = 90;        // estimated stay in minutes (1.5 hrs)
+const SK_R       = "cs_r4";
+const SK_S       = "cs_s4";
+const MONTHS     = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+const TYPE_LBL   = {felicitacion:"Felicitación",sugerencia:"Sugerencia",recomendacion:"Recomendación",queja:"Queja",otro:"Otro"};
+
+// All available booking hours (13:00 – 22:30 in 30-min slots)
+// Last slot is 22:30 so stay ends at 00:00
+const HOURS = [
+  "13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30",
+  "17:00","17:30","18:00","18:30","19:00","19:30","20:00","20:30",
+  "21:00","21:30","22:00","22:30"
+];
+
+// ── STATE ───────────────────────────────────────
+let R=[], S=[], editId=null, fromAdmin=false, pendId=null;
+
+function load(){
+  try{const r=localStorage.getItem(SK_R);if(r)R=JSON.parse(r)}catch{}
+  try{const s=localStorage.getItem(SK_S);if(s)S=JSON.parse(s)}catch{}
+}
+function save(){
+  try{localStorage.setItem(SK_R,JSON.stringify(R))}catch{}
+  try{localStorage.setItem(SK_S,JSON.stringify(S))}catch{}
+}
+load();
+
+// ── HELPERS ─────────────────────────────────────
+const today=()=>new Date().toISOString().split("T")[0];
+const fmtD=s=>{if(!s)return"";const[y,m,d]=s.split("-");return`${parseInt(d)} ${MONTHS[parseInt(m)-1]} ${y}`};
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+const esc=s=>{const d=document.createElement("div");d.textContent=s;return d.innerHTML};
+
+// Convert "HH:MM" to minutes since midnight
+function toMin(h){const[hh,mm]=h.split(":").map(Number);return hh*60+mm}
+// Add minutes to "HH:MM" string
+function addMin(h,m){const t=toMin(h)+m;const hh=Math.floor(t/60)%24;const mm=t%60;return`${String(hh).padStart(2,"0")}:${String(mm).padStart(2,"0")}`}
+
+/**
+ * Persons already occupying the restaurant at a given slot.
+ * A reservation at hour H occupies slots from H to H+STAY_MIN (exclusive).
+ */
+function personsAt(date, slotHour, excId=null){
+  const slotMin = toMin(slotHour);
+  return R
+    .filter(r=>{
+      if(r.date!==date||r.status==="cancelled"||r.id===excId) return false;
+      const start=toMin(r.hour);
+      const end  =start+STAY_MIN; // exclusive end
+      return slotMin>=start && slotMin<end;
+    })
+    .reduce((a,r)=>a+r.guests, 0);
+}
+
+/** Available capacity at a given slot */
+function availAt(date, slotHour, excId=null){
+  return MAX_CAP - personsAt(date, slotHour, excId);
+}
+
+/**
+ * Can a group of `guests` be accommodated starting at `hour`?
+ * All slots covered by the stay must have enough room.
+ */
+function canBook(date, hour, guests, excId=null){
+  const start = toMin(hour);
+  // Check every 30-min slot the group occupies
+  for(let m=0; m<STAY_MIN; m+=SLOT_MIN){
+    const slotH = addMin(hour, m);
+    // Only check if slot is within operating hours
+    if(toMin(slotH) >= toMin("23:30")) break;
+    const free = availAt(date, slotH, excId);
+    if(guests > free) return false;
+  }
+  return true;
+}
+
+// ── NAV ─────────────────────────────────────────
+function go(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  window.scrollTo(0,0);
+}
+
+function checkHash(){
+  if(window.location.hash===AHASH){
+    go("s-login");
+    setTimeout(()=>document.getElementById("pwd").focus(),260);
+  }
+}
+window.addEventListener("hashchange",checkHash);
+window.addEventListener("DOMContentLoaded",checkHash);
+
+// ── TOAST ────────────────────────────────────────
+let toastT;
+function toast(msg,t="ok"){
+  const el=document.getElementById("toast");
+  el.textContent=msg;el.className=`toast ${t}`;el.style.display="block";
+  clearTimeout(toastT);toastT=setTimeout(()=>el.style.display="none",3200);
+}
+
+// ── MODAL ────────────────────────────────────────
+function openConfirm(id){
+  pendId=id;
+  document.getElementById("modal").style.display="flex";
+  document.getElementById("modal-yes").onclick=()=>{doCancel(pendId);closeModal()};
+}
+function closeModal(){document.getElementById("modal").style.display="none";pendId=null}
+
+// ── AUTH ─────────────────────────────────────────
+function doPwd(){
+  const v=document.getElementById("pwd").value;
+  if(v===PWD){
+    document.getElementById("pwd").value="";
+    document.getElementById("pwd-err").textContent="";
+    initAdmin();go("s-admin");
+  } else {
+    document.getElementById("pwd-err").textContent="Contraseña incorrecta.";
+    document.getElementById("pwd").select();
+  }
+}
+function doLogout(){history.pushState("","",window.location.pathname);go("s-home")}
+
+// ── ADMIN ────────────────────────────────────────
+function initAdmin(){
+  if(!document.getElementById("adate").value) document.getElementById("adate").value=today();
+  if(!document.getElementById("ddate").value)  document.getElementById("ddate").value=today();
+  renderAList();renderDisp();renderASug();
+}
+
+function aTab(t){
+  ["r","d","s"].forEach(x=>{
+    document.getElementById("ap-"+x).style.display=x===t?"block":"none";
+    document.getElementById("tb-"+x).classList.toggle("on",x===t);
+  });
+}
+
+function renderAList(){
+  const date=document.getElementById("adate").value||today();
+  const list=R.filter(r=>r.date===date&&r.status!=="cancelled").sort((a,b)=>a.hour.localeCompare(b.hour));
+  const ppl=list.reduce((a,r)=>a+r.guests,0);
+  document.getElementById("s-cnt").textContent=list.length;
+  document.getElementById("s-ppl").textContent=ppl;
+  document.getElementById("s-cap").textContent=Math.round(ppl/MAX_CAP*100)+"%";
+  document.getElementById("a-list").innerHTML=list.length===0
+    ?`<p class="empty">Sin reservaciones para esta fecha.</p>`
+    :list.map(r=>rcHTML(r,true)).join("");
+}
+
+function renderDisp(){
+  const date=document.getElementById("ddate").value||today();
+  // For admin grid: show actual capacity numbers per slot
+  document.getElementById("d-grid").innerHTML=HOURS.map(h=>{
+    const used=personsAt(date,h);
+    const pct=used/MAX_CAP;
+    const free=MAX_CAP-used;
+    const color=pct<0.5?"#4a9c4a":pct<0.85?"#a07820":"#943030";
+    return`<div class="hcard" style="border-color:${color}44">
+      <span class="hlabel">${h}</span>
+      <div class="hbar-bg"><div class="hbar" style="width:${pct*100}%;background:${color}"></div></div>
+      <span class="hinfo" style="color:${color}">${free}/${MAX_CAP} lugares</span>
+    </div>`;
+  }).join("");
+}
+
+function renderASug(){
+  const el=document.getElementById("a-sug");
+  if(!S.length){el.innerHTML=`<p class="empty">Aún no hay comentarios.</p>`;return}
+  el.innerHTML=[...S].reverse().map(s=>`
+    <div class="sgcard">
+      <div class="sg-hdr"><span class="sg-name">${esc(s.name)}</span><span class="sg-dt">${fmtD(s.date)}</span></div>
+      <div class="sg-type">${TYPE_LBL[s.type]||s.type}</div>
+      <div class="sg-txt">${esc(s.text)}</div>
+    </div>`).join("");
+}
+
+function openNewAdmin(){fromAdmin=true;editId=null;initForm();document.getElementById("form-ttl").textContent="Nueva Reservación";document.getElementById("f-submit").textContent="Confirmar Reservación";go("s-form")}
+function openClientForm(){fromAdmin=false;editId=null;initForm();document.getElementById("form-ttl").textContent="Nueva Reservación";document.getElementById("f-submit").textContent="Confirmar Reservación";go("s-form")}
+
+// ── FORM ─────────────────────────────────────────
+function initForm(res=null){
+  document.getElementById("f-hour").innerHTML=HOURS.map(h=>`<option value="${h}">${h}</option>`).join("");
+  document.getElementById("f-guests").innerHTML=[1,2,3,4,5,6,7,8,9,10,12,15,20].map(n=>`<option value="${n}">${n} persona${n>1?"s":""}</option>`).join("");
+  document.getElementById("f-name").value=res?.name||"";
+  document.getElementById("f-phone").value=res?.phone||"";
+  document.getElementById("f-date").value=res?.date||today();
+  document.getElementById("f-date").min=today();
+  document.getElementById("f-hour").value=res?.hour||"20:00";
+  document.getElementById("f-guests").value=res?.guests||2;
+  document.getElementById("f-notes").value=res?.notes||"";
+  upAvail();
+}
+
+function upAvail(){
+  const date=document.getElementById("f-date").value;
+  const hour=document.getElementById("f-hour").value;
+  const guests=parseInt(document.getElementById("f-guests").value)||1;
+  const ok=canBook(date,hour,guests,editId);
+  const badge=document.getElementById("avail-badge");
+  badge.className=`avail ${ok?"ok":"no"}`;
+  // Client only sees available / not available — no numbers
+  badge.textContent=ok?"✓  Disponible para ese horario":"✗  Sin disponibilidad para ese horario";
+  const btn=document.getElementById("f-submit");
+  btn.style.opacity=ok?"1":"0.3";
+  btn.onclick=ok?doSubmit:null;
+}
+
+function backForm(){
+  editId=null;
+  if(fromAdmin){renderAList();go("s-admin")}else go("s-home");
+}
+
+function doSubmit(){
+  const name=document.getElementById("f-name").value.trim();
+  const phone=document.getElementById("f-phone").value.trim();
+  const date=document.getElementById("f-date").value;
+  const hour=document.getElementById("f-hour").value;
+  const guests=parseInt(document.getElementById("f-guests").value);
+  const notes=document.getElementById("f-notes").value.trim();
+  if(!name||!phone||!date||!hour||!guests){toast("Completa todos los campos requeridos.","er");return}
+  if(!canBook(date,hour,guests,editId)){toast("Sin disponibilidad para ese horario.","er");return}
+  if(editId){
+    R=R.map(r=>r.id===editId?{...r,name,phone,date,hour,guests,notes}:r);
+    toast("Reservación actualizada ✓");editId=null;
+  } else {
+    R.push({id:uid(),name,phone,date,hour,guests,notes,status:"confirmed",createdAt:new Date().toISOString()});
+    toast("¡Reservación confirmada! ✓");
+  }
+  save();
+  if(fromAdmin){renderAList();go("s-admin")}else go("s-home");
+}
+
+// ── RES CARD ─────────────────────────────────────
+function rcHTML(r,isAdmin=false){
+  const endH=addMin(r.hour,STAY_MIN);
+  return`<div class="rc">
+    <div class="rc-top">
+      <div><div class="rc-name">${esc(r.name)}</div><div class="rc-phone">${esc(r.phone)}</div></div>
+      <div><div class="rc-hour">${r.hour} – ${endH}</div><div class="rc-date">${fmtD(r.date)}</div></div>
+    </div>
+    <div class="bgs">
+      <span class="bg">👥 ${r.guests} persona${r.guests>1?"s":""}</span>
+    </div>
+    ${r.notes?`<div class="rc-notes">"${esc(r.notes)}"</div>`:""}
+    <div class="rc-acts">
+      <button class="bsm" onclick="editRes('${r.id}',${isAdmin})">Editar</button>
+      <button class="bsm del" onclick="openConfirm('${r.id}')">Cancelar</button>
+    </div>
+  </div>`;
+}
+
+function editRes(id,isAdmin=false){
+  const r=R.find(x=>x.id===id);if(!r)return;
+  editId=id;fromAdmin=isAdmin;initForm(r);
+  document.getElementById("form-ttl").textContent="Editar Reservación";
+  document.getElementById("f-submit").textContent="Guardar Cambios";
+  go("s-form");
+}
+
+function doCancel(id){
+  R=R.map(r=>r.id===id?{...r,status:"cancelled"}:r);
+  save();toast("Reservación cancelada.");renderAList();renderLookup();
+}
+
+// ── LOOKUP ───────────────────────────────────────
+function renderLookup(){
+  const phone=document.getElementById("lk-phone").value.trim();
+  const el=document.getElementById("lk-res");
+  if(phone.length<7){el.innerHTML="";return}
+  const found=R.filter(r=>r.phone===phone&&r.status!=="cancelled").sort((a,b)=>a.date.localeCompare(b.date));
+  el.innerHTML=found.length===0
+    ?`<p class="empty">No se encontraron reservaciones activas.</p>`
+    :found.map(r=>rcHTML(r,false)).join("");
+}
+
+// ── SUGGESTIONS ──────────────────────────────────
+function doSuggest(){
+  const name=document.getElementById("s-name").value.trim();
+  const type=document.getElementById("s-type").value;
+  const text=document.getElementById("s-txt").value.trim();
+  if(!text){toast("Escribe tu comentario antes de enviar.","er");return}
+  S.push({id:uid(),name:name||"Anónimo",type,text,date:today(),createdAt:new Date().toISOString()});
+  save();
+  document.getElementById("s-name").value="";
+  document.getElementById("s-txt").value="";
+  toast("¡Gracias por tu comentario! ✓");
+  go("s-home");
+}
+
+window.editRes=editRes;
+window.openConfirm=openConfirm;
+</script>
+</body>
+</html>
